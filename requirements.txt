@@ -1,0 +1,4 @@
+# Core runtime (PyTorch installed separately per README)
+stable-ts
+pydub
+tqdm
