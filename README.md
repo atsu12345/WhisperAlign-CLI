@@ -205,7 +205,7 @@ This project is licensed under the MIT License.
 ```
 MIT License
 
-Copyright (c) YEAR Project Authors
+Copyright (c) 2025 Rael
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
@@ -216,5 +216,3 @@ furnished to do so, subject to the following conditions:
 
 [... standard MIT text unchanged ...]
 ```
-
-Replace `YEAR` and `Project Authors` as appropriate.
