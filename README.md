@@ -187,12 +187,15 @@ which ffmpeg
 ## FAQ
 
 **Q: Do I need `openai-whisper`?**
+
 A: No. This project uses `stable_whisper` from `stable-ts` only. Model files remain compatible.
 
 **Q: Why is Apple Silicon recommended?**
+
 A: The tool is optimized for M-series (MPS acceleration). Intel Macs are not tested; performance/compatibility may vary.
 
 **Q: Stable PyTorch fails—what now?**
+
 A: Install PyTorch Nightly. Known-good builds (as of 2025-09-10):
 `torch==2.10.0.dev20250910`, `torchaudio==2.8.0.dev20250910`, `torchvision==0.24.0.dev20250910`.
 
@@ -201,8 +204,5 @@ A: Install PyTorch Nightly. Known-good builds (as of 2025-09-10):
 ## License (MIT)
 
 This project is licensed under the MIT License.
-
-```
-MIT License
 
 Copyright (c) 2025 Rael
