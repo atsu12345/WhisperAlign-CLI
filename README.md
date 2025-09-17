@@ -1,7 +1,7 @@
-# MacWhisper CLI (stable-ts)
+# Whisper Align CLI
 
-A Mac-friendly command-line tool to turn audio/video into subtitles using `stable-ts` (`stable_whisper`).
-Supports forced alignment, SRT/VTT/TXT outputs, language-aware line wrapping, progress bars, and clear exit codes.
+A command-line tool for forced alignment of text with audio using `stable-ts` (`stable_whisper`), optimized for macOS.
+This tool focuses on generating accurately timestamped subtitles from a media file and a reference text.
 
 **Chip recommendation:** Optimized for Apple Silicon (M-series). Intel Macs are not tested.
 
@@ -9,13 +9,11 @@ Supports forced alignment, SRT/VTT/TXT outputs, language-aware line wrapping, pr
 
 ## Features
 
-- 🎤 Transcription & Translation with `stable_whisper`
-- 📌 Forced alignment against a reference text (precise timestamps)
-- 🧾 Outputs: `srt` (default), `vtt`, `txt`, or `all`
-- ✂️ Smart wrapping: CJK by characters, others by words; configurable width
-- ⚡ MPS acceleration on Apple Silicon; alignment auto-falls back to CPU for stability
-- 🧭 Structured logs (`--log-level`) and progress bars (`tqdm`)
-- 🧨 Exit codes: `0` success, `1` runtime error, `2` usage error, `3` dependency error
+- 📌 **Forced Alignment**: Generate precise timestamps from a reference text.
+- 🧾 **Multiple Export Formats**: Outputs `srt` (default), `vtt`, `txt`, or `all`.
+- 🌏 **CJK Language Support**: Proper CJK text handling (removes spaces between characters).
+- ⚡ **Apple Silicon Accelerated**: Uses MPS for acceleration and auto-falls back to CPU for alignment stability.
+- 🧭 **Developer Friendly**: Structured logs (`--log-level`), progress bars (`tqdm`), and clear exit codes for scripting.
 
 ---
 
@@ -33,16 +31,16 @@ Supports forced alignment, SRT/VTT/TXT outputs, language-aware line wrapping, pr
 
 ---
 
-## Installation (with Conda)
+## Installation
 
-> Don’t have Conda yet? Install Miniconda from the [official site](https://docs.conda.io/en/latest/miniconda.html).
+> Don't have Conda yet? Install Miniconda from the [official site](https://docs.conda.io/en/latest/miniconda.html).
 >
 > Don't have Homebrew yet? Install it from its [homepage](https://brew.sh/).
 
 1.  **Create & activate a new conda environment (Python 3.10+)**
     ```bash
-    conda create -n macwhisper python=3.11 -y
-    conda activate macwhisper
+    conda create -n whisper-align python=3.11 -y
+    conda activate whisper-align
     ```
 
 2.  **Install FFmpeg (Homebrew)**
@@ -78,42 +76,36 @@ Supports forced alignment, SRT/VTT/TXT outputs, language-aware line wrapping, pr
 
 ---
 
-## Quick Start
+## Usage
 
-**Transcribe to SRT (default):**
-```bash
-python macwhisper_cli.py /path/to/input.mov --model medium --output_dir out
+### 1. Prepare Your Reference Text
+
+For the best results, pre-format your reference `.txt` file. Each line in the file should correspond to a desired subtitle line. Long, unbroken paragraphs will result in a single, long subtitle segment, which is usually not desirable.
+
+**Good `text.txt`:**
+```
+This is the first line.
+And this is the second.
 ```
 
-**Export all formats (SRT/VTT/TXT):**
-```bash
-python macwhisper_cli.py /path/to/input.mp3 --output-format all --output_dir out
+**Bad `text.txt`:**
+```
+This is the first line. And this is the second.
 ```
 
-**Set log level and disable progress bar:**
-```bash
-python macwhisper_cli.py /path/to/input.wav --log-level DEBUG --no-progress
-```
+### 2. Run Alignment
 
----
-
-## Forced Alignment
-
-Use alignment when you already have a (mostly correct) transcript and want accurate timestamps.
-Alignment requires a language code (`--language`) matching the primary spoken language in the audio.
+Use alignment when you already have a transcript and want accurate timestamps. A language code (`--language`) matching the spoken language is required.
 
 ```bash
-python macwhisper_cli.py /path/to/input.mov \
-  --align_from /path/to/reference.txt \
+python -m macwhisper.cli /path/to/input.mov /path/to/reference.txt \
   --language ja \
   --model medium \
   --output-format all \
-  --max-line-width 42 \
   --output_dir out
 ```
 
-> **Note on bilingual audio:**
-> For Chinese/Japanese audio, prefer aligning with the dominant spoken language. If truly bilingual, split the reference text by language and align separately, or run plain transcription first and then edit.
+> For bilingual audio, specify the primary spoken language with `--language`. The tool can often handle segments of a secondary language, but for best results, ensure the reference text matches the audio content.
 
 ---
 
@@ -122,21 +114,19 @@ python macwhisper_cli.py /path/to/input.mov \
 | Option             | Default        | Notes                                                      |
 |--------------------|----------------|------------------------------------------------------------|
 | `input_file`       | —              | Audio/video file (any FFmpeg-readable format)              |
+| `text_file`        | —              | Path to reference text file for alignment (required)       |
 | `--model`          | `medium`       | `tiny` / `base` / `small` / `medium` / `large` / `large-v3`|
-| `--task`           | `transcribe`   | Or `translate` (to English)                                |
-| `--language`       | `auto`         | Required for alignment; auto-detected otherwise            |
-| `--align_from`     | —              | Path to reference text for forced alignment                |
+| `--language`       | —              | Required language code (e.g., zh, ja, en)                  |
 | `--output_dir`     | `.`            | Output directory                                           |
 | `--output-format`  | `srt`          | `srt` / `vtt` / `txt` / `all`                              |
-| `--max-line-width` | `42`           | Subtitle wrapping width                                    |
 | `--device`         | `auto`         | `mps` (Apple Silicon) or `cpu`                             |
 | `--no-fp16`        | `off`          | Disable fp16 (can help on some MPS setups)                 |
 | `--log-level`      | `INFO`         | `DEBUG` / `INFO` / `WARNING` / `ERROR`                     |
 | `--no-progress`    | `off`          | Disable progress bars                                      |
 
 **Notes:**
-- **Wrapping:** CJK lines wrap by characters; other languages wrap by words.
-- **Alignment:** If running on MPS, alignment automatically switches to CPU for stability.
+- **Alignment:** On MPS, alignment automatically switches to CPU for stability.
+- **CJK Text Handling:** The tool automatically removes spaces between CJK characters.
 
 ---
 
@@ -149,7 +139,7 @@ python macwhisper_cli.py /path/to/input.mov \
 
 **Use in scripts:**
 ```bash
-python macwhisper_cli.py /path/to/input.mov || exit $?
+python -m macwhisper.cli /path/to/input.mov /path/to/reference.txt --language ja || exit $?
 ```
 
 ---
@@ -157,7 +147,7 @@ python macwhisper_cli.py /path/to/input.mov || exit $?
 ## Troubleshooting
 
 **FFmpeg not found**
-Install via Homebrew and ensure it’s on your `PATH`:
+Install via Homebrew and ensure it's on your `PATH`:
 ```bash
 brew install ffmpeg
 which ffmpeg
@@ -169,35 +159,14 @@ which ffmpeg
 - On Apple Silicon: try `--no-fp16`
 
 **Alignment fails or looks off**
-- Ensure `--language` matches the spoken language
-- Provide a clean, correctly ordered reference text
-- For mixed-language audio: align per language or transcribe first, then edit
-
-**Progress bar missing**
-- `tqdm` is optional; `pip install tqdm` or use `--no-progress`
+- Ensure `--language` matches the spoken language. 
+- Provide a clean, correctly ordered reference text, preferably with one subtitle line per line in the text file.
 
 **MPS not available**
 - Reinstall PyTorch Nightly via the default nightly index (no `cpu` channel), or update macOS/Xcode CLTs:
   ```bash
   pip install --pre torch torchaudio torchvision -i https://download.pytorch.org/whl/nightly
   ```
-
----
-
-## FAQ
-
-**Q: Do I need `openai-whisper`?**
-
-A: No. This project uses `stable_whisper` from `stable-ts` only. Model files remain compatible.
-
-**Q: Why is Apple Silicon recommended?**
-
-A: The tool is optimized for M-series (MPS acceleration). Intel Macs are not tested; performance/compatibility may vary.
-
-**Q: Stable PyTorch fails—what now?**
-
-A: Install PyTorch Nightly. Known-good builds (as of 2025-09-10):
-`torch==2.10.0.dev20250910`, `torchaudio==2.8.0.dev20250910`, `torchvision==0.24.0.dev20250910`.
 
 ---
 
